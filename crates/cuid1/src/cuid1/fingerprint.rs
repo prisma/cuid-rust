@@ -1,6 +1,7 @@
 use num::bigint;
 use rand::{thread_rng, Rng};
 use sha3::{Digest, Sha3_512};
+#[cfg(not(target_arch = "wasm32"))]
 use std::{
     collections::hash_map::DefaultHasher,
     hash::{Hash, Hasher},
@@ -34,13 +35,16 @@ thread_local! {
         [
             thread_rng().gen::<u128>().to_be_bytes(),
             thread_rng().gen::<u128>().to_be_bytes(),
+            #[cfg(not(target_arch="wasm32"))]
             u128::from(std::process::id()).to_be_bytes(),
+            #[cfg(not(target_arch="wasm32"))]
             u128::from(get_thread_id()).to_be_bytes(),
         ],
         BIG_LENGTH.into(),
     );
 }
 
+#[cfg(not(target_arch = "wasm32"))]
 /// Retrieves the current thread's ID.
 fn get_thread_id() -> u64 {
     // ThreadId doesn't implement debug or display, but it does implement Hash,

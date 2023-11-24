@@ -14,8 +14,8 @@ pub fn timestamp() -> Result<String, CuidError> {
 
 #[cfg(test)]
 mod time_tests {
-    use super::super::BASE;
     use super::*;
+    use crate::BASE;
 
     // NOTE: this will start failing in ~2059, at which point this will need to
     // be updated to 9
