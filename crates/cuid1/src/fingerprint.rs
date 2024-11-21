@@ -1,12 +1,11 @@
-use std::process;
-
 use crate::text::{pad, to_base_string};
 use crate::BASE;
+use cuid_util::process_id_fallback;
 
 static FINGERPRINT_PADDING: usize = 2;
 
 fn pid() -> String {
-    pad(FINGERPRINT_PADDING, to_base_string(process::id()))
+    pad(FINGERPRINT_PADDING, to_base_string(process_id_fallback()))
 }
 
 /// Convert the hostname to a padded String in the appropriate base.
@@ -43,8 +42,7 @@ fn host_id() -> String {
 
 pub fn fingerprint() -> String {
     let mut hid = host_id();
-    let procid = pid();
-    hid.push_str(&procid);
+    hid.push_str(pid().as_str());
     hid
 }
 

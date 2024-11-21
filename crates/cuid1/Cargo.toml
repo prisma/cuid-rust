@@ -15,18 +15,18 @@ num = { version = "0.4.0", features = ["num-bigint"] }
 once_cell = "1.19.0"
 rand.workspace = true
 uuid = { version = "1.10.0", features = ["v4"] }
-getrandom = { version = "0" }
-
-[dev-dependencies]
-criterion.workspace = true
 
 # Not WASM deps
 [target.'cfg(not(target_family = "wasm"))'.dependencies]
 hostname = "0.4.0"
 
 # WASM-only deps
-[target.'cfg(target_arch = "wasm32")'.dependencies.getrandom]
-features = ["js"]
+[target.'cfg(target_arch = "wasm32")'.dependencies]
+getrandom = { version = "0", features = ["js"] }
+wasm-rs-dbg = "0.1.2"
+
+[target.'cfg(not(target_arch = "wasm32"))'.dev-dependencies]
+criterion.workspace = true
 
 [lib]
 name = "cuid1"

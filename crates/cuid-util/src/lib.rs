@@ -35,6 +35,19 @@ pub fn millis_since_unix_epoch() -> u128 {
         .as_millis()
 }
 
+#[cfg(not(target_arch = "wasm32"))]
+pub fn process_id_fallback() -> u128 {
+    std::process::id() as u128
+}
+
+#[cfg(target_arch = "wasm32")]
+pub fn process_id_fallback() -> u128 {
+    use js_sys::Object as JsObject;
+
+    // See: https://github.com/paralleldrive/cuid2/blob/768d132d559c712c26d6ccc26a2895c3c180b60c/src/index.js#L58
+    JsObject::keys(&js_sys::global()).length() as u128
+}
+
 /// Converts any number representable as a u128 into a base36 String.
 ///
 /// Benchmarking has shown this function to be faster than anything I've been

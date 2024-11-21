@@ -60,7 +60,7 @@ use std::{
     hash::{Hash, Hasher},
 };
 
-use cuid_util::ToBase36;
+use cuid_util::{process_id_fallback, ToBase36};
 use num::bigint;
 use rand::{seq::SliceRandom, thread_rng, Rng};
 use sha3::{Digest, Sha3_512};
@@ -103,16 +103,13 @@ thread_local! {
     ///
     /// For us, we'll use
     /// - A few random numbers
-    /// - the process ID
+    /// - the process ID (falling back to the number of entries in `globalThis` on wasm32-*, to avoid runtime panics)
     /// - the thread ID (which also ensures our CUIDs will be different per thread)
-    ///
-    /// This is pretty non-language, non-system dependent, so it allows us to
-    /// compile to wasm and so on.
     static FINGERPRINT: String = hash(
         [
             thread_rng().gen::<u128>().to_be_bytes(),
             thread_rng().gen::<u128>().to_be_bytes(),
-            u128::from(std::process::id()).to_be_bytes(),
+            process_id_fallback().to_be_bytes(),
             u128::from(get_thread_id()).to_be_bytes(),
         ],
         BIG_LENGTH.into(),

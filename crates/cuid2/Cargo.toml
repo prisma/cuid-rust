@@ -29,9 +29,18 @@ num = { version = "0.4.0", features = ["num-bigint"] }
 rand.workspace = true
 sha3 = "0.10.6"
 
+# WASM-only deps
+[target.'cfg(target_arch = "wasm32")'.dependencies]
+getrandom = { version = "0", features = ["js"] }
+
 [dev-dependencies]
-criterion.workspace = true
 num_cpus = "1.15.0"
 proptest.workspace = true
 radix_fmt = "1.0.0"
+
+[target.'cfg(not(target_arch = "wasm32"))'.dev-dependencies]
+criterion.workspace = true
+
+# WASM-only dev-deps
+[target.'cfg(target_arch = "wasm32")'.dev-dependencies]
 wasm-bindgen-test.workspace = true
