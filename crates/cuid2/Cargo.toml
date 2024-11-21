@@ -35,7 +35,3 @@ num_cpus = "1.15.0"
 proptest.workspace = true
 radix_fmt = "1.0.0"
 wasm-bindgen-test.workspace = true
-
-# WASM-only deps
-[target.wasm32-unknown-unknown.dependencies]
-getrandom = { version = "0", features = ["js"] }
