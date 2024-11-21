@@ -38,4 +38,4 @@ wasm-bindgen-test.workspace = true
 
 # WASM-only deps
 [target.wasm32-unknown-unknown.dependencies]
-getrandom = { version = "0.2.15", features = ["js"] }
+getrandom = { version = "0", features = ["js"] }
