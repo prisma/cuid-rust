@@ -36,7 +36,6 @@ proptest.workspace = true
 radix_fmt = "1.0.0"
 wasm-bindgen-test.workspace = true
 
+# WASM-only deps
 [target.wasm32-unknown-unknown.dependencies]
-# Just specified so we can add a feature when the js feature is enabled.
-# This works fine on wasm targets other than unknown-unknown
-getrandom = { version = "0", features = ["js"] }
+getrandom = { version = "0.2.15", features = ["js"] }

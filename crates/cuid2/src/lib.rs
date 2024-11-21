@@ -58,7 +58,6 @@ use std::{
     cell::RefCell,
     collections::hash_map::DefaultHasher,
     hash::{Hash, Hasher},
-    time::{SystemTime, UNIX_EPOCH},
 };
 
 use cuid_util::ToBase36;
@@ -239,24 +238,8 @@ fn create_entropy(length: u16) -> String {
 
 /// Retrieves the current timestmap and converts to Base36.
 fn get_timestamp() -> String {
-    SystemTime::now()
-        .duration_since(UNIX_EPOCH)
-        // Use timestamp as milliseconds to match JS implementation
-        .map(|time| time.as_millis().to_base_36())
-        // Panic safety: `.duration_since()` fails if the end time is not
-        // later than the start time, so this will only fail if the system
-        // time is before 1970-01-01. It is impossible on Unix systems to set
-        // a time before then, since the entire system uses a 32 or 64 bit
-        // unsigned integer for time, where zero is midnight 1970-01-01.
-        //
-        // If you are on a system that for some reason both can be and needs to
-        // be set >50 years in the past AND this library not working is a
-        // problem for you, please feel free to reach out.
-        .expect(
-            "Failed to calculate system timestamp! Current system time may be \
-                 set to before the Unix epoch, or time may otherwise be broken. \
-                 Cannot continue",
-        )
+    // Use timestamp as milliseconds to match JS implementation
+    cuid_util::millis_since_unix_epoch().to_base_36()
 }
 
 /// Retrieves and increments the counter value.

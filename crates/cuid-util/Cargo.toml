@@ -16,3 +16,7 @@ num = { version = "0.4.0", features = ["num-bigint"] }
 proptest.workspace = true
 # Our radix function is faster than this one, but we can use it to check our output
 radix_fmt = "1.0.0"
+
+# WASM-only deps
+[target.wasm32-unknown-unknown.dependencies]
+web-time = "1.1.0"

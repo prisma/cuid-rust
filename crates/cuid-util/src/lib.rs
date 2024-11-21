@@ -7,6 +7,34 @@
 // Construcing Base36 Values
 // =========================
 
+#[cfg(not(target_arch = "wasm32"))]
+pub fn millis_since_unix_epoch() -> u128 {
+    use std::time::{SystemTime, UNIX_EPOCH};
+
+    SystemTime::now()
+        .duration_since(UNIX_EPOCH)
+        .expect(
+            "Failed to calculate system timestamp! Current system time may be \
+                 set to before the Unix epoch, or time may otherwise be broken. \
+                 Cannot continue",
+        )
+        .as_millis()
+}
+
+#[cfg(target_arch = "wasm32")]
+pub fn millis_since_unix_epoch() -> u128 {
+    use web_time::{SystemTime, UNIX_EPOCH};
+
+    SystemTime::now()
+        .duration_since(UNIX_EPOCH)
+        .expect(
+            "Failed to calculate system timestamp! Current system time may be \
+                 set to before the Unix epoch, or time may otherwise be broken. \
+                 Cannot continue",
+        )
+        .as_millis()
+}
+
 /// Converts any number representable as a u128 into a base36 String.
 ///
 /// Benchmarking has shown this function to be faster than anything I've been

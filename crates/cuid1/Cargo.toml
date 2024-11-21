@@ -23,6 +23,10 @@ criterion.workspace = true
 [target.'cfg(not(target_family = "wasm"))'.dependencies]
 hostname = "0.4.0"
 
+# WASM-only deps
+[target.wasm32-unknown-unknown.dependencies]
+getrandom = { version = "0.2.15", features = ["js"] }
+
 [lib]
 name = "cuid1"
 path = "src/lib.rs"
